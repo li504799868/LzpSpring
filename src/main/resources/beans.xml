@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-init-method="init"
+       default-destroy-method="destroy">
+
+    <bean id="helloImpl1" class="com.lzp.spring.hello.impl.HelloImpl1"/>
+
+    <!--<bean id="helloService" class="com.lzp.spring.hello.HelloService">-->
+    <!--<property name="hello" ref="helloImpl2"/>-->
+    <!--</bean>-->
+
+    <bean id="helloService" class="com.lzp.spring.hello.HelloService">
+        <!--内部定义的bean -->
+        <constructor-arg name="hello">
+            <bean class="com.lzp.spring.hello.impl.HelloImpl2"/>
+        </constructor-arg>
+    </bean>
+
+    <bean class="com.lzp.spring.InitHelloProcessor"/>
+
+    <!-- 定义bean，参数为集合 -->
+    <bean id="myCollection" class="com.lzp.spring.collection.MyCollection">
+        <property name="addressList">
+            <list>
+                <value>111</value>
+                <value>111</value>
+                <value>111</value>
+            </list>
+        </property>
+
+        <property name="addressMap">
+            <map>
+                <entry key="1" value="aaa"/>
+                <entry key="2" value="bbb"/>
+                <entry key="3" value="ccc"/>
+            </map>
+        </property>
+
+        <property name="addressProp">
+            <props>
+                <prop key="a">Hello</prop>
+                <prop key="b">Hi</prop>
+            </props>
+        </property>
+
+        <property name="addressSet">
+            <set>
+                <value>1111</value>
+                <value>2222</value>
+                <value>3333</value>
+            </set>
+        </property>
+
+
+    </bean>
+
+    <bean id="startEventHandler" class="com.lzp.spring.listener.StartEventHandler"/>
+    <bean id="stopEventHandler" class="com.lzp.spring.listener.StopEventHandler"/>
+
+    <!-- 声明一个aspect，这里helloImpl将被依赖和注入 -->
+    <aop:config>
+        <aop:aspect id="helloImpl" ref="helloImpl1"/>
+    </aop:config>
+</beans>
